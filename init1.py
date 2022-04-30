@@ -208,6 +208,19 @@ def home():
     cursor.close()
     return render_template('home.html', username=username, posts=data1)
 
+@app.route('/home_staff')
+def home_staff():
+    
+    username = session['username']
+    cursor = conn.cursor();
+    query = 'SELECT ts, blog_post FROM blog WHERE username = %s ORDER BY ts DESC'
+    cursor.execute(query, (username))
+    data1 = cursor.fetchall() 
+    for each in data1:
+        print(each['blog_post'])
+    cursor.close()
+    return render_template('home_staff.html', username=username, posts=data1)
+
 		
 @app.route('/post', methods=['GET', 'POST'])
 def post():
