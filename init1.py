@@ -48,9 +48,11 @@ def SCsearchresults():
 	if data != NULL:
 		flightData = cursor.fetchall()
 		cursor.execute(close_view)
+		cursor.close()
 		return render_template('searchresults.html', flightData = flightData)
 	else:
 		cursor.execute(close_view)
+		cursor.close()
 		return render_template('searcherror.html')
 #flight search execution with Depart port
 @app.route('/SAsearchresults', methods=['GET', 'POST'])
@@ -61,8 +63,10 @@ def SAsearchresults():
 	data = cursor.execute(query, (Depart_port))
 	if data != NULL:
 		flightData = cursor.fetchall()
+		cursor.close()
 		return render_template('searchresults.html', flightData = flightData)
 	else:
+		cursor.close()
 		return render_template('searcherror.html')
 #flight search execution with Arrival city
 @app.route('/DCsearchresults', methods=['GET', 'POST'])
@@ -77,9 +81,11 @@ def DCsearchresults():
 	if data != NULL:
 		flightData = cursor.fetchall()
 		cursor.execute(close_view)
+		cursor.close()
 		return render_template('searchresults.html', flightData = flightData)
 	else:
 		cursor.execute(close_view)
+		cursor.close()
 		return render_template('searcherror.html')
 #flight search execution with Arrival port
 @app.route('/DAsearchresults', methods=['GET', 'POST'])
@@ -90,8 +96,10 @@ def DAsearchresults():
 	data = cursor.execute(query, (Arrival_port))
 	if data != NULL:
 		flightData = cursor.fetchall()
+		cursor.close()
 		return render_template('searchresults.html', flightData = flightData)
 	else:
+		cursor.close()
 		return render_template('searcherror.html')
 #flight search execution with Depart date
 @app.route('/DDsearchresults', methods=['GET', 'POST'])
@@ -102,8 +110,10 @@ def DDsearchresults():
 	data = cursor.execute(query, (Depart_date))
 	if data !=  NULL:
 		flightData = cursor.fetchall()
+		cursor.close()
 		return render_template('searchresults.html', flightData = flightData)
 	else:
+		cursor.close()
 		return render_template('searcherror.html')
 
 #flight search execution for Round Trip
@@ -115,8 +125,10 @@ def RTsearchresults():
 	data = cursor.execute(query, (Depart_date))
 	if data != NULL:
 		DepartData = cursor.fetchall()
+		cursor.close()
 		return render_template('RTresults.html', DepartData = DepartData)
 	else:
+		cursor.close()
 		return render_template('searcherror.html')
 
 #for possible return flights
@@ -137,8 +149,12 @@ def RTresults():
 	if data1 != NULL and data2 != NULL:
 		DepartData = cursor1.fetchall()
 		ReturnData = cursor2.fetchall()
+		cursor1.close()
+		cursor2.close()
 		return render_template('RTFinal.html', DepartData = DepartData, ReturnData = ReturnData)
 	else:
+		cursor1.close()
+		cursor2.close()
 		return render_template('searcherror.html')
 
 #Authenticates the login
