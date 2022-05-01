@@ -1,0 +1,37 @@
+<p>DEPARTURE FLIGHTS</p>
+<table border = 1>
+    {% for flight in DepartData %}
+    <tr>
+        <td>{{flight["Airline_name"]}}</td>
+        <td>{{flight["Flight_num"]}}</td>
+        <td>{{flight["Depart_date"]}}</td>
+        <td>{{flight["Depart_time"]}}</td>
+        <td>{{flight["Depart_port"]}}</td>
+        <td>{{flight["Arrival_port"]}}</td>
+        <td>{{flight["Arrival_date"]}}</td>
+        <td>{{flight["Arrival_time"]}}</td>
+        <td>{{flight["Base_price"]}}</td>
+        <td>{{flight["ID_num"]}}</td>
+        <td>{{flight["Flight_status"]}}</td>
+        
+    </tr>
+    {% endfor %}
+</table>
+
+<p>Please choose desire departure by flight number,
+    departure date, departure time, airline name,
+    arrival airport, and arrival date
+</p>
+
+<form action="/RTresults" method="POST">
+    <h1>Perfered Flight</h1>
+    <input type="text" name = "FN" placeholder="Flight number" required/> </br>
+    <input type="text" name = "DD" placeholder="Departure date" required/> </br>
+    <input type="text" name = "DT" placeholder="Departure time" required/> </br>
+    <input type="text" name = "AN" placeholder="Airline name" required/> </br>
+    <input type="text" name = "AP" placeholder="Arrival Port" required/> </br>
+    <input type="text" name = "AD" placeholder="Arrival date" required/> </br>
+    <input type="submit" value = "Search" />
+</form>
+
+<a href="/flightsearch">Go back</a>
