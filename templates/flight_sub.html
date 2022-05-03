@@ -1,0 +1,29 @@
+<html>
+    <head>
+    </head>
+    <body>
+        {% if no_fly %}
+
+        <p class="error"><strong>Error:</strong> {{no_fly}}</p>
+        {% else %}
+        <h1>Please choose which flight you would like to rate based on their Flight Number.</h1>
+        <table border = 1>
+            {% for info in flight_info %}
+            <tr>
+                <td>{{info[Flight_Num]}}</td>
+                <td>{{info[Arrival_date]}}</td>
+                <td>{{info[Arrival_time]}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        <!--
+        <form action="/sel_flight" method="POST">
+            <input type="text" name = "sel" placeholder="Flight Number" required/> </br>
+            <input type="submit" value = Submit />
+        </form>
+        -->
+
+        {% endif %}
+    </body>
+    <a href="/">Go back</a>                         <!-- Edit later -->
+</html>

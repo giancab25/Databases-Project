@@ -1,0 +1,21 @@
+<html>
+    <h1>
+        {{username}}'s Spending Tracker
+    </h1>
+
+    <p> This is your gross estimate for the past year</p>
+
+    <table border = 1>
+        {% for money in data %}
+        <tr>
+            <td>{{money["Sold_Price"]}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+
+
+
+
+    <a href="/home">CustomerHomePage</a>
+</html>

@@ -1,7 +1,8 @@
 #Import Flask Library
+from asyncio.windows_events import NULL
+from datetime import datetime, date, timedelta
 from flask import Flask, render_template, request, session, url_for, redirect
 import pymysql.cursors
-from datetime import date
 
 #Initialize the app from Flask
 app = Flask(__name__)
@@ -11,7 +12,7 @@ conn = pymysql.connect(host='localhost',
 					   port = 3306,
                        user='root',
                        password='',
-                       db='airticketreservation',
+                       db='project',
                        charset='utf8mb4',
                        cursorclass=pymysql.cursors.DictCursor)
 
@@ -157,6 +158,35 @@ def RTresults():
 		cursor2.close()
 		return render_template('searcherror.html')
 
+#flight search execution for Round Trip
+
+@app.route('/critique_sub', methods=['GET', 'POST'])
+def critique_sub():
+	#grabs information from the forms
+	username = session['username']
+	f_num = request.form['f_num']
+	rating = request.form['rating']
+	comment = request.form['comment']
+	
+	
+	#cursor used to send queries
+	cursor = conn.cursor()
+
+	query = 'SELECT * FROM flights WHERE Flight_num = %s'
+	cursor.execute(query, (f_num))
+	data = cursor.fetchone()
+	no_fly = None
+	if (data):
+		ins = 'INSERT INTO critiques VALUES (%s, %s, %s, %s)'
+		cursor.execute(ins, (username, f_num, rating, comment))
+		conn.commit()
+		cursor.close()
+		return render_template('home.html')
+	else:
+		no_fly = "We could not find a flight with this Flight Number, please try again"
+		return render_template('pastflights.html', no_fly = no_fly)
+
+#Authenticates the login
 @app.route('/loginAuth', methods=['GET', 'POST'])
 def loginAuth():
 	#grabs information from the forms
@@ -194,6 +224,7 @@ def loginAuth():
 		#returns an error message to the html page
 		error = 'Invalid login or username'
 		return render_template('login.html', error=error)
+
 #Authenticates the register
 @app.route('/registerAuth', methods=['GET', 'POST'])
 def registerAuth():
@@ -234,6 +265,7 @@ def registerAuth():
 		conn.commit()
 		cursor.close()
 		return render_template('index.html')
+
 @app.route('/registerAuthStaff', methods=['GET','POST'])
 def registerAuthStaff():
 	#grabs and saves in variables info from forms
@@ -275,7 +307,6 @@ def home():
     #cursor.close()
     return render_template('home.html', username=username)#, username=username, posts=data1)
 
-#Customer views their future flights
 @app.route('/viewflights', methods=['GET','POST'])
 def viewflights():
 	username = session['username']
@@ -307,12 +338,12 @@ def pastflights():
 	data = cursor.fetchall()
 	query = 'DROP VIEW CustTicket'
 	cursor.execute(query)
+	cursor.close()
 	if (data):
-		cursor.close()
 		return render_template('pastflights.html', username=username, data=data)
 	else:
 		return render_template('pastflights.html')
-	
+
 #Customer views up coming flights for purchase
 @app.route('/available', methods=['GET','POST'])
 def available():
@@ -328,11 +359,47 @@ def available():
 		cursor.close()
 		return render_template('available.html')
 
+@app.route('/yearPurchases', methods=['GET', 'POST'])
+def yearPurchases():
+	username = session['username']
+	curr_date = date.today()
+	year_date = date.today() - timedelta(days = 365)
+	cursor = conn.cursor()
+	query = 'SELECT AVG(Sold_Price) AS avg_rate FROM ticket NATURAL JOIN flights WHERE Cust_Email = %s AND Depart_date > %s AND Depart_date < %s'
+	#query = 'SELECT Sold_Price FROM ticket NATURAL JOIN flights WHERE Cust_Email = %s AND Depart_date > %s AND Depart_date < %s'
+	cursor.execute(query, (username, year_date, curr_date))
+	data = cursor.fetchall()
+	if (data):
+		cursor.close()
+		return render_template('yearPurchases.html', username=username, data=data)
+	else:
+		return render_template('yearPurchases.html', username=username)
+
+@app.route('/fixedTable', methods=['GET', 'POST'])
+def fixedTable():
+	username = session['username']
+	curr_date = date.today()
+	hyear_date = date.today() - timedelta(days = 182)
+	cursor = conn.cursor()
+	query = 'SELECT Sold_Price FROM ticket NATURAL JOIN flights WHERE Cust_Email = %s AND Depart_date > %s AND Depart_date < %s'
+	cursor.execute(query, (username, hyear_date, curr_date))
+	data = cursor.fetchall()
+	if (data):
+		cursor.close()
+		return render_template('fixedTable.html', username=username, data=data)
+	else:
+		return render_template('fixedTable.html', username=username)
+
+@app.route('/rangedPurchases', methods=['GET', 'POST'])
+def rangedPurchases():
+	
+
 @app.route('/homestaff')
 def homestaff():
 	username=session['username']
-	return render_template('homestaff.html')
+	return render_template('homestaff.html', username=username)
 
+		
 @app.route('/post', methods=['GET', 'POST'])
 def post():
 	username = session['username']
@@ -359,4 +426,4 @@ app.secret_key = 'some key that you will never guess'
 #debug = True -> you don't have to restart flask
 #for changes to go through, TURN OFF FOR PRODUCTION
 if __name__ == "__main__":
-	app.run('127.0.0.1', 5000, debug = True)
+	app.run('127.0.0.1', 5000, debug = False)

@@ -42,8 +42,10 @@ CREATE TABLE Flights(
 	Base_price		numeric(5,2),
 	ID_num			int,
 	Flight_status	varchar(7),
+	Avg_ratings		int,										/* Update in Github */
 	PRIMARY KEY (Airline_name, Flight_num, Depart_date, Depart_time),
-	FOREIGN KEY (Airline_name) references Airline (Airline_name)
+	FOREIGN KEY (Airline_name) references Airline (Airline_name),
+	INDEX (Flight_num)
 );
 
 CREATE TABLE Airline_Staff(
@@ -87,5 +89,15 @@ CREATE TABLE Ticket(
 	PRIMARY KEY (Ticket_ID),
 	FOREIGN KEY (Cust_Email) references Customer (Email_Address),
 	FOREIGN KEY (Airline_Name) references Airline (Airline_name),
+	FOREIGN KEY (Flight_Num) references Flights (Flight_num)
+);
+
+/*		Junction table for many-to-many relationship		*/
+CREATE TABLE Critiques(
+	Cust_addy			varchar(40),
+	Flight_num			int,
+	Rating				int,
+	Comments			varchar(250),
+	FOREIGN KEY (Cust_addy) references Customer (Email_Address),
 	FOREIGN KEY (Flight_Num) references Flights (Flight_num)
 );

@@ -8,6 +8,10 @@
 	<input type="submit" value = Post />
 </form>
 
+{% if sent %}
+<h3>{{sent}}</h3>
+{% endif %}
+
 <style type="text/css">
 	table, th, td{
 		border: 1px solid black;
@@ -40,6 +44,24 @@
 </form>
 
 <h2>VIEW FLIGHTS AVAILABLE</h2>
+
+<form action="/available" method="POST">
+	<input type="submit" value = availableflights />
+</form>
+
+<h2>VIEW RECENT PURCHASES</h2>
+
+<form action="/yearPurchases" method="POST">
+	<input type="submit" value = yearPurchases />
+</form>
+
+<form action="/fixedTable" method="POST">
+	<input type="submit" value = fixedTable />
+</form>
+
+<form action="/rangedPurchases" method="POST">
+	<input type="submit" value = rangedPurchases />
+</form>
 
 <form action="/available" method="POST">
 	<input type="submit" value = availableflights />

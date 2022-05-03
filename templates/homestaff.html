@@ -1,34 +1,127 @@
 <html>
-<head>
-</head>
-<body>
-<form action="/poststaff" method="POST">
-	<h1>Welcome Staff {{username}}</h1>
-	<input type="text" name = "blog" placeholder="post" required/> </br>
-	<input type="submit" value = Post />
-</form>
+    <head>
+        <style type="text/css">
+            body{
+                margin: 0;
+            }
 
-<style type="text/css">
-	table, th, td{
-		border: 1px solid black;
-	}
-</style>
+            nav{
+                width: 100%;
+                float: left;
+            }
 
-<table>
-	<th>Time</th>
-	<th>Post</th>
+            .top_menu{
+                margin: 0;
+                padding: 8px;
+                height: 21px;
+                background-color:#0288d1;
+            }
 
-{% for line in posts %}
-	<tr>
-		<td>{{line['ts']}}</td>
-		<td>{{line['blog_post']}}</td>
-	</tr>
-{% endfor %}
-</table>
+            .top_menu li{
+                display: inline;
+            }
 
-<a href="/logout">Logout</a>
+            .button{
+                font-family: Arial;
+                font-size:1em;
+                font-style: none;
+                color: #ffffff;
+                padding: 8px;
+                text-decoration: none;
+            }
 
-</body>
+            .button:link{
+                background-color: #0288d1;
+                color: #ffffff
+            }
+
+            .button:hover{
+                background-color: #03a9f4;
+            }
+        </style>
+    </head>
+    <body>
+        <nav>
+            <ul class="top_menu">
+                <li><a class="button" href="homestaff.html">Home</a></li>
+                <li><a class="button" href="as.hmtl">Aerial System</a></li>
+                <li><a class="button" href="index.hmtl">Payroll</a></li>
+                <li><a class="button" href="about.html">About</a></li>
+            </ul>
+        </nav>
+
+        
+        <h1>Welcome Employee, {{username}}!</h1>
+
+
+        <h3>
+            <p style="text-align:center;">
+                <br>This is your homepage, our beloved staff. It'll almost feel like a second home during your time with us!
+            </p>
+            <p>
+                <br><br><br>Flight Navigator
+            </p>
+        </h3>
+
+        <div class="dropdown">
+            <select>
+                <option><a href="/???">View flights</a></option>
+                <option><a href="/???">Create new flights</a></option>
+                <option><a href="/???">Change status of flights</a></option>
+                <option><a href="/???">View flight ratings</a></option>
+            </select>
+        </div>
+
+        <style type="text/css">
+            table, th, td{
+                border: 1px solid black;
+                margin-left:auto;
+                margin-right:auto;
+            }
+        </style>
+
+        <table>
+            <!--  -->
+            <th>Time</th>
+            <th>Post</th>
+
+        {% for line in posts %}
+            <tr>
+                <td>{{line['ts']}}</td>
+                <td>{{line['blog_post']}}</td>
+            </tr>
+        {% endfor %}
+        </table>
+
+    <!--
+        <form action="/post" method="POST">
+            <h1>Happy to see you, {{username}}</h1>
+            <input type="text" name = "blog" placeholder="post" required/> </br>
+            <input type="submit" value = Post />
+        </form>
+
+
+        <style type="text/css">
+            table, th, td{
+                border: 1px solid black;
+            }
+        </style>
+        <table>
+            <th>Time</th>
+            <th>Post</th>
+
+        {% for line in posts %}
+            <tr>
+                <td>{{line['ts']}}</td>
+                <td>{{line['blog_post']}}</td>
+            </tr>
+        {% endfor %}
+        </table>
+    -->
+
+        <a href="/logout">Logout</a>
+
+    </body>
 
 
 </html>
