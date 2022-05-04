@@ -1,6 +1,6 @@
 <p>YOUR DEPARTURE FLIGHT</p>
 <table border = 1>
-    {% for flight in DepartData %}
+    {% for flight in flightData %}
     <tr>
         <td>{{flight["Airline_name"]}}</td>
         <td>{{flight["Flight_num"]}}</td>
@@ -20,7 +20,7 @@
 
 <p>POSSIBLE RETURN FLIGHTS</p>
 <table border = 1>
-    {% for flight in ReturnData %}
+    {% for flight in returnData %}
     <tr>
         <td>{{flight["Airline_name"]}}</td>
         <td>{{flight["Flight_num"]}}</td>
@@ -38,4 +38,4 @@
     {% endfor %}
 </table>
 
-<a href="/flightsearch">Go back</a>
+<a href="/">Go back</a>

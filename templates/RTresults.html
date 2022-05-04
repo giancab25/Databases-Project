@@ -1,6 +1,6 @@
 <p>DEPARTURE FLIGHTS</p>
 <table border = 1>
-    {% for flight in DepartData %}
+    {% for flight in flightData %}
     <tr>
         <td>{{flight["Airline_name"]}}</td>
         <td>{{flight["Flight_num"]}}</td>
@@ -20,7 +20,7 @@
 
 <p>Please choose desire departure by flight number,
     departure date, departure time, airline name,
-    arrival airport, and arrival date
+    arrival airport, and arrival date {{Return_date}}
 </p>
 
 <form action="/RTresults" method="POST">
@@ -31,7 +31,8 @@
     <input type="text" name = "AN" placeholder="Airline name" required/> </br>
     <input type="text" name = "AP" placeholder="Arrival Port" required/> </br>
     <input type="text" name = "AD" placeholder="Arrival date" required/> </br>
-    <input type="submit" value = "Search" />
+    <input type="text" name = "RD" value = {{Return_date}} /> </br>
+    <input type="submit"  value = "Search" />
 </form>
 
 <a href="/flightsearch">Go back</a>
