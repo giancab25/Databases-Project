@@ -172,19 +172,39 @@ def critique_sub():
 	#cursor used to send queries
 	cursor = conn.cursor()
 
-	query = 'SELECT * FROM flights WHERE Flight_num = %s'
-	cursor.execute(query, (f_num))
+	query = 'SELECT * FROM flights, ticket WHERE ticket.Flight_num = %s and Cust_Email = %s'
+	cursor.execute(query, (f_num, username))
 	data = cursor.fetchone()
-	no_fly = None
-	if (data):
+	query = 'SELECT * FROM critiques WHERE Cust_addy = %s'
+	cursor.execute(query, (username))
+	spam = cursor.fetchone()
+	message = None
+	if (spam) and (data):
+		cursor.close()
+		message = "You've already left a review for this flight, please select another and click the 'Refresh' button to reload the table."
+		return render_template('pastflights.html', message=message)
+	elif (spam) and not (data):
+		cursor.close()
+		message = "You've not taken this flight, please select another and click the 'Refresh' button to reload the table."
+		return render_template('pastflights.html', message=message)
+	elif not (data) and not (spam):
+		cursor.close()
+		message = "We couldn't find a flight with this Flight Number, please try again"
+		return render_template('pastflights.html', message=message)
+	else:
+		
 		ins = 'INSERT INTO critiques VALUES (%s, %s, %s, %s)'
 		cursor.execute(ins, (username, f_num, rating, comment))
 		conn.commit()
 		cursor.close()
-		return render_template('home.html')
-	else:
-		no_fly = "We could not find a flight with this Flight Number, please try again"
-		return render_template('pastflights.html', no_fly = no_fly)
+		message = 'Your review has been submitted and will be reviewed as soon as possible. Thank you!'
+		return render_template('home.html', message=message)
+
+
+@app.route('/reloadCrit', methods=['GET', 'POST'])
+def refreshCrit():
+	return redirect(url_for('pastflights'))
+
 
 #Authenticates the login
 @app.route('/loginAuth', methods=['GET', 'POST'])
@@ -363,14 +383,13 @@ def available():
 def yearPurchases():
 	username = session['username']
 	curr_date = date.today()
-	year_date = date.today() - timedelta(days = 365)
+	yr_date = date.today() - timedelta(days = 365)
 	cursor = conn.cursor()
-	query = 'SELECT AVG(Sold_Price) AS avg_rate FROM ticket NATURAL JOIN flights WHERE Cust_Email = %s AND Depart_date > %s AND Depart_date < %s'
-	#query = 'SELECT Sold_Price FROM ticket NATURAL JOIN flights WHERE Cust_Email = %s AND Depart_date > %s AND Depart_date < %s'
-	cursor.execute(query, (username, year_date, curr_date))
-	data = cursor.fetchall()
+	query = 'SELECT ROUND(AVG(Sold_Price),2) FROM ticket, flights WHERE Cust_Email = %s AND Depart_date > %s AND Depart_date < %s'
+	cursor.execute(query, (username, yr_date, curr_date))
+	data = cursor.fetchone()
+	cursor.close()
 	if (data):
-		cursor.close()
 		return render_template('yearPurchases.html', username=username, data=data)
 	else:
 		return render_template('yearPurchases.html', username=username)
@@ -390,9 +409,24 @@ def fixedTable():
 	else:
 		return render_template('fixedTable.html', username=username)
 
+@app.route('/pickRangeP', methods=['GET', 'POST'])
+def pickRangeP():
+	return render_template('rangedPurchases.html', username=session['username'])
+
 @app.route('/rangedPurchases', methods=['GET', 'POST'])
 def rangedPurchases():
-	
+	username = session['username']
+	hyr_date = request.form['hyr_date']
+	yr_date = request.form['yr_date']
+	cursor = conn.cursor()
+	query = 'SELECT ROUND(AVG(Sold_Price),2) FROM ticket, flights WHERE Cust_Email = %s AND Depart_date > %s AND Depart_date < %s'
+	data = cursor.execute(query, (username, hyr_date, yr_date))
+	cursor.close()
+	if (data != NULL):
+		return render_template('rangedResults.html', username=username, data=data, yr_date=yr_date, hyr_date=hyr_date)
+	else:
+		return render_template('rangedResults.html', username=username, yr_date = yr_date, hyr_date = hyr_date)
+
 
 @app.route('/homestaff')
 def homestaff():
@@ -411,10 +445,6 @@ def post():
 	# cursor.close()
 	return redirect(url_for('home'))
 
-@app.route('/poststaff',methods=['GET','POST'])
-def poststaff():
-	username=session['username']
-	return render_template('homestaff.html')
 
 @app.route('/logout')
 def logout():
@@ -424,6 +454,6 @@ def logout():
 app.secret_key = 'some key that you will never guess'
 #Run the app on localhost port 5000
 #debug = True -> you don't have to restart flask
-#for changes to go through, TURN OFF FOR PRODUCTION
+#for changes to go through, TURN OFseaF FOR PRODUCTION
 if __name__ == "__main__":
-	app.run('127.0.0.1', 5000, debug = False)
+	app.run('127.0.0.1', 5000, debug = True)

@@ -1,3 +1,4 @@
+{% if not message %}
 <h1>
     All past flights for {{username}}
 </h1>
@@ -18,9 +19,12 @@
         <td>{{flight["Flight_status"]}}</td>
         
     </tr>
-    {% endfor %}
+{% endfor %}
 </table>
 
+
+<br><br>
+{% endif %}
 <p>Would you like to leave a review? Enter the Flight number of your choice below and tell us what you think!</p>
 
 <form action="/critique_sub" method="POST">
@@ -30,10 +34,11 @@
     <input type="submit" value = Submit />
 </form>
 
-{% if no_fly %}
-<p class="error"><strong>Error:</strong> {{no_fly}}</p>
+{% if message %}
+<p class="error"><strong>Error:</strong>{{message}}</p>
 {% endif %}
 
 <br>
 
-<a href="/home">Customer Home Page</a>
+<a href="/home">[Customer Home Page]</a>
+<a href="/pastflights">[Fresh]</a>
