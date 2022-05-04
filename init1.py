@@ -37,7 +37,7 @@ def flightsearch():         #display flight search page
 
 #flight search execution with Depart city
 @app.route('/searchresults', methods=['GET', 'POST'])
-def SCsearchresults():
+def searchresults():
 	Depart_City = request.form['SC']
 	Depart_port = request.form['SA'] 
 	Arrival_City = request.form['DC']
@@ -56,47 +56,67 @@ def SCsearchresults():
 		ID_num, Flight_status FROM flights NATURAL JOIN city NATURAL JOIN \
 		city2 WHERE Depart_city = %s AND Depart_port = %s AND Arrival_city = %s\
 		AND Arrival_port = %s AND Depart_date >= %s' 
-	data = cursor.execute(data_query, (Depart_City,Depart_port,Arrival_City, Arrival_port, Depart_date))
-	if (data):
-		flightData = cursor.fetchall()
-		cursor.execute('DROP VIEW city')
-		cursor.execute('DROP VIEW city2')
-		cursor.close()
-		if (Return_date != ''):
-			return render_template('RTresults.html', flightData = flightData, Return_date=Return_date)
-		return render_template('searchresults.html', flightData = flightData)
+	roundDepart = 'SELECT Airline_name, Flight_num, Depart_date, Depart_time, \
+		Depart_port, Arrival_port, Arrival_date, Arrival_time, Base_price, \
+		ID_num, Flight_status FROM flights NATURAL JOIN city NATURAL JOIN \
+		city2 WHERE Depart_city = %s AND Depart_port = %s AND Arrival_city = %s\
+		AND Arrival_port = %s AND Depart_date >= %s AND Depart_date < %s \
+		AND Arrival_date < %s' 
+	if(Return_date == ''):
+		data = cursor.execute(data_query, (Depart_City,Depart_port,Arrival_City, Arrival_port, Depart_date))
+		if (data):
+			flightData = cursor.fetchall()
+			cursor.execute('DROP VIEW city')
+			cursor.execute('DROP VIEW city2')
+			cursor.close()
+			return render_template('searchresults.html', flightData = flightData)
+		else:
+			cursor.execute('DROP VIEW city')
+			cursor.execute('DROP VIEW city2')
+			cursor.close()
+			return render_template('searcherror.html')
 	else:
-		cursor.execute('DROP VIEW city')
-		cursor.execute('DROP VIEW city2')
+		data = cursor.execute(roundDepart, (Depart_City,Depart_port,Arrival_City, Arrival_port, Depart_date, Return_date, Return_date))
+		cursor2 = conn.cursor()
+		data2 = cursor2.execute(data_query, (Arrival_City,Arrival_port,Depart_City, Depart_port, Return_date))
+		if (data) and (data2):
+			flightData = cursor.fetchall()
+			returnData = cursor2.fetchall()
+			cursor.execute('DROP VIEW city')
+			cursor.execute('DROP VIEW city2')
+			cursor.close()
+			cursor2.close()
+			return render_template('RTFinal.html', flightData = flightData, returnData = returnData)
+		else:
+			cursor.execute('DROP VIEW city')
+			cursor.execute('DROP VIEW city2')
+			cursor.close()
+			cursor2.close()
+			return render_template('searcherror.html')
+
+#view flight status
+@app.route('/viewflightstatus')
+def status():
+	return render_template('statInfo.html')
+
+@app.route('/showstat', methods=['GET','POST'])
+def showstat():
+	Airline = request.form['AN']
+	Flight = request.form['FN']
+	Departure = request.form['DD']
+	Arrival = request.form['AD']
+	cursor = conn.cursor()
+	query = 'SELECT Flight_status FROM flights WHERE Airline_name = %s \
+		AND Flight_num = %s AND Depart_date = %s AND Arrival_date = %s'
+	data = cursor.execute(query, (Airline, Flight, Departure, Arrival))
+	if (data):
+		stat = cursor.fetchall()
+		cursor.close()
+		return render_template('showstat.html', stat=stat)
+	else:
 		cursor.close()
 		return render_template('searcherror.html')
 
-#for possible return flights
-@app.route('/RTresults', methods=['GET', 'POST'])
-def RTresults():	
-	Flight_num = request.form['FN'] 
-	Depart_date = request.form['DD'] 
-	Depart_time = request.form['DT'] 
-	Airline_name = request.form['AN'] 
-	Arrival_port = request.form['AP'] 
-	Arrival_date = request.form['AD']
-	Return_date = request.form['RD']
-	cursor1 = conn.cursor(); #used to execute SQL commands
-	query1 = 'SELECT * FROM flights WHERE Flight_num = %s and Depart_date = %s and Depart_time = %s and Airline_name = %s and Arrival_port = %s' #Query 
-	data1 = cursor1.execute(query1, (Flight_num,Depart_date,Depart_time,Airline_name, Arrival_port))
-	cursor2 = conn.cursor(); #used to execute SQL commands
-	query2 = 'SELECT * FROM flights WHERE Depart_port = %s and Depart_date >= %s and Depart_date > %s' #Query 
-	data2 = cursor2.execute(query2, (Arrival_port, Return_date, Arrival_date))	
-	if (data1)  and (data2) :
-		flightData = cursor1.fetchall()
-		returnData = cursor2.fetchall()
-		cursor1.close()
-		cursor2.close()
-		return render_template('RTFinal.html', flightData = flightData, returnData = returnData)
-	else:
-		cursor1.close()
-		cursor2.close()
-		return render_template('searcherror.html')
 
 @app.route('/loginAuth', methods=['GET', 'POST'])
 def loginAuth():
