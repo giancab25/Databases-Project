@@ -89,3 +89,13 @@ CREATE TABLE Ticket(
 	FOREIGN KEY (Airline_Name) references Airline (Airline_name),
 	FOREIGN KEY (Flight_Num) references Flights (Flight_num)
 );
+
+/*		Junction table for many-to-many relationship		*/
+CREATE TABLE Critiques(
+	Cust_addy			varchar(40),
+	Flight_num			int,
+	Rating				int,
+	Comments			varchar(250),
+	FOREIGN KEY (Cust_addy) references Customer (Email_Address),
+	FOREIGN KEY (Flight_Num) references Flights (Flight_num)
+);
