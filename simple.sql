@@ -42,6 +42,7 @@ CREATE TABLE Flights(
 	Base_price		numeric(5,2),
 	ID_num			int,
 	Flight_status	varchar(7),
+	Avg_rating		int,
 	PRIMARY KEY (Airline_name, Flight_num, Depart_date, Depart_time),
 	FOREIGN KEY (Airline_name) references Airline (Airline_name)
 );
