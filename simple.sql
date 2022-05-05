@@ -45,6 +45,7 @@ CREATE TABLE Flights(
 	Avg_rating		int,
 	PRIMARY KEY (Airline_name, Flight_num, Depart_date, Depart_time),
 	FOREIGN KEY (Airline_name) references Airline (Airline_name)
+	INDEX{Flight_num)
 );
 
 CREATE TABLE Airline_Staff(
