@@ -4,7 +4,7 @@
     </h1>
 
     {% if not empty %}
-    <p> This has been your spending for the past 6 months since {{hyear_date}}</p>
+    <p> This has been your spending between {{hyr_date}} and {{yr_date}}</p>
 
     <table border = 1>
         <tr>
@@ -24,7 +24,7 @@
         <tr>
             {% for money in data1 %}
             <td>
-                {% if money %}
+                {% if money["SUM(Sold_Price)"] %}
                     ${{money["SUM(Sold_Price)"]}}
                 {% else %}
                     $0

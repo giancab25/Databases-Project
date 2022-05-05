@@ -385,7 +385,7 @@ def yearPurchases():
 	curr_date = date.today()
 	yr_date = date.today() - timedelta(days = 365)
 	cursor = conn.cursor()
-	query = 'SELECT ROUND(AVG(Sold_Price),2) FROM ticket, flights WHERE Cust_Email = %s AND Depart_date > %s AND Depart_date < %s'
+	query = 'SELECT SUM(Sold_Price) FROM ticket NATURAL JOIN flights WHERE Cust_Email = %s AND Depart_date > %s AND Depart_date < %s'
 	cursor.execute(query, (username, yr_date, curr_date))
 	data = cursor.fetchone()
 	cursor.close()
@@ -400,33 +400,124 @@ def fixedTable():
 	curr_date = date.today()
 	hyear_date = date.today() - timedelta(days = 182)
 	cursor = conn.cursor()
-	query = 'SELECT Sold_Price FROM ticket NATURAL JOIN flights WHERE Cust_Email = %s AND Depart_date > %s AND Depart_date < %s'
-	cursor.execute(query, (username, hyear_date, curr_date))
-	data = cursor.fetchall()
-	if (data):
-		cursor.close()
-		return render_template('fixedTable.html', username=username, data=data)
+	#SELECT SUM(Sold_Price) FROM ticket NATURAL JOIN flights WHERE Cust_Email = 'gjc357@nyu.edu' AND Depart_date > '2021-11-03' AND Depart_date < '2022-05-04';
+	query1 = 'SELECT SUM(Sold_Price) FROM ticket NATURAL JOIN flights WHERE Cust_Email = %s AND Depart_date > %s AND Depart_date < %s AND EXTRACT(MONTH FROM Depart_date) = 1'
+	cursor.execute(query1, (username, hyear_date, curr_date))
+	data1 = cursor.fetchall()
+	query2 = 'SELECT SUM(Sold_Price) FROM ticket NATURAL JOIN flights WHERE Cust_Email = %s AND Depart_date > %s AND Depart_date < %s AND EXTRACT(MONTH FROM Depart_date) = 2'
+	cursor.execute(query2, (username, hyear_date, curr_date))
+	data2 = cursor.fetchall()
+	query3 = 'SELECT SUM(Sold_Price) FROM ticket NATURAL JOIN flights WHERE Cust_Email = %s AND Depart_date > %s AND Depart_date < %s AND EXTRACT(MONTH FROM Depart_date) = 3'
+	cursor.execute(query3, (username, hyear_date, curr_date))
+	data3 = cursor.fetchall()
+	query4 = 'SELECT SUM(Sold_Price) FROM ticket NATURAL JOIN flights WHERE Cust_Email = %s AND Depart_date > %s AND Depart_date < %s AND EXTRACT(MONTH FROM Depart_date) = 4'
+	cursor.execute(query4, (username, hyear_date, curr_date))
+	data4 = cursor.fetchall()
+	query5 = 'SELECT SUM(Sold_Price) FROM ticket NATURAL JOIN flights WHERE Cust_Email = %s AND Depart_date > %s AND Depart_date < %s AND EXTRACT(MONTH FROM Depart_date) = 5'
+	cursor.execute(query5, (username, hyear_date, curr_date))
+	data5 = cursor.fetchall()
+	query6 = 'SELECT SUM(Sold_Price) FROM ticket NATURAL JOIN flights WHERE Cust_Email = %s AND Depart_date > %s AND Depart_date < %s AND EXTRACT(MONTH FROM Depart_date) = 6'
+	cursor.execute(query6, (username, hyear_date, curr_date))
+	data6 = cursor.fetchall()
+	query7 = 'SELECT SUM(Sold_Price) FROM ticket NATURAL JOIN flights WHERE Cust_Email = %s AND Depart_date > %s AND Depart_date < %s AND EXTRACT(MONTH FROM Depart_date) = 7'
+	cursor.execute(query7, (username, hyear_date, curr_date))
+	data7 = cursor.fetchall()
+	query8 = 'SELECT SUM(Sold_Price) FROM ticket NATURAL JOIN flights WHERE Cust_Email = %s AND Depart_date > %s AND Depart_date < %s AND EXTRACT(MONTH FROM Depart_date) = 8'
+	cursor.execute(query8, (username, hyear_date, curr_date))
+	data8 = cursor.fetchall()
+	query9 = 'SELECT SUM(Sold_Price) FROM ticket NATURAL JOIN flights WHERE Cust_Email = %s AND Depart_date > %s AND Depart_date < %s AND EXTRACT(MONTH FROM Depart_date) = 9'
+	cursor.execute(query9, (username, hyear_date, curr_date))
+	data9 = cursor.fetchall()
+	query10 = 'SELECT SUM(Sold_Price) FROM ticket NATURAL JOIN flights WHERE Cust_Email = %s AND Depart_date > %s AND Depart_date < %s AND EXTRACT(MONTH FROM Depart_date) = 10'
+	cursor.execute(query10, (username, hyear_date, curr_date))
+	data10 = cursor.fetchall()
+	query11 = 'SELECT SUM(Sold_Price) FROM ticket NATURAL JOIN flights WHERE Cust_Email = %s AND Depart_date > %s AND Depart_date < %s AND EXTRACT(MONTH FROM Depart_date) = 11'
+	cursor.execute(query11, (username, hyear_date, curr_date))
+	data11 = cursor.fetchall()
+	query12 = 'SELECT SUM(Sold_Price) FROM ticket NATURAL JOIN flights WHERE Cust_Email = %s AND Depart_date > %s AND Depart_date < %s AND EXTRACT(MONTH FROM Depart_date) = 12'
+	cursor.execute(query12, (username, hyear_date, curr_date))
+	data12 = cursor.fetchall()
+	cursor.close()
+	empty = None
+	if (data1) or (data2) or (data3) or (data4) or (data5) or (data6) or (data7) or (data8) or (data9) or (data10) or (data11) or (data12):
+		return render_template('fixedTable.html', username=username, hyear_date=hyear_date, data1=data1, data2=data2, data3=data3, data4=data4, data5=data5, data6=data6, data7=data7, data8=data8, data9=data9, data10=data10, data11=data11, data12=data12)
 	else:
-		return render_template('fixedTable.html', username=username)
+		empty = 'There is no data to show at this time.'
+		return render_template('fixedTable.html', username=username, empty=empty)
 
 @app.route('/pickRangeP', methods=['GET', 'POST'])
 def pickRangeP():
-	return render_template('rangedPurchases.html', username=session['username'])
+	return render_template('pickPurchases.html', username=session['username'])
 
 @app.route('/rangedPurchases', methods=['GET', 'POST'])
 def rangedPurchases():
 	username = session['username']
-	hyr_date = request.form['hyr_date']
 	yr_date = request.form['yr_date']
+	hyr_date = request.form['hyr_date']
 	cursor = conn.cursor()
-	query = 'SELECT ROUND(AVG(Sold_Price),2) FROM ticket, flights WHERE Cust_Email = %s AND Depart_date > %s AND Depart_date < %s'
-	data = cursor.execute(query, (username, hyr_date, yr_date))
+	query = 'SELECT SUM(Sold_Price) FROM ticket NATURAL JOIN flights WHERE Cust_Email = %s AND Depart_date > %s AND Depart_date < %s'
+	cursor.execute(query, (username, hyr_date, yr_date))
+	data = cursor.fetchone()
 	cursor.close()
 	if (data != NULL):
 		return render_template('rangedResults.html', username=username, data=data, yr_date=yr_date, hyr_date=hyr_date)
 	else:
 		return render_template('rangedResults.html', username=username, yr_date = yr_date, hyr_date = hyr_date)
 
+@app.route('/pickRangeT', methods=['GET', 'POST'])
+def pickRangeT():
+	return render_template('pickTable.html', username=session['username'])
+
+@app.route('/rangedTable', methods=['GET', 'POST'])
+def rangedTable():
+	username = session['username']
+	yr_date = request.form['yr_date']
+	hyr_date = request.form['hyr_date']
+	cursor = conn.cursor()
+	#SELECT SUM(Sold_Price) FROM ticket NATURAL JOIN flights WHERE Cust_Email = 'gjc357@nyu.edu' AND Depart_date > '2021-11-03' AND Depart_date < '2022-05-04';
+	query1 = 'SELECT SUM(Sold_Price) FROM ticket NATURAL JOIN flights WHERE Cust_Email = %s AND Depart_date > %s AND Depart_date < %s AND EXTRACT(MONTH FROM Depart_date) = 1'
+	cursor.execute(query1, (username, hyr_date, yr_date))
+	data1 = cursor.fetchall()
+	query2 = 'SELECT SUM(Sold_Price) FROM ticket NATURAL JOIN flights WHERE Cust_Email = %s AND Depart_date > %s AND Depart_date < %s AND EXTRACT(MONTH FROM Depart_date) = 2'
+	cursor.execute(query2, (username, hyr_date, yr_date))
+	data2 = cursor.fetchall()
+	query3 = 'SELECT SUM(Sold_Price) FROM ticket NATURAL JOIN flights WHERE Cust_Email = %s AND Depart_date > %s AND Depart_date < %s AND EXTRACT(MONTH FROM Depart_date) = 3'
+	cursor.execute(query3, (username, hyr_date, yr_date))
+	data3 = cursor.fetchall()
+	query4 = 'SELECT SUM(Sold_Price) FROM ticket NATURAL JOIN flights WHERE Cust_Email = %s AND Depart_date > %s AND Depart_date < %s AND EXTRACT(MONTH FROM Depart_date) = 4'
+	cursor.execute(query4, (username, hyr_date, yr_date))
+	data4 = cursor.fetchall()
+	query5 = 'SELECT SUM(Sold_Price) FROM ticket NATURAL JOIN flights WHERE Cust_Email = %s AND Depart_date > %s AND Depart_date < %s AND EXTRACT(MONTH FROM Depart_date) = 5'
+	cursor.execute(query5, (username, hyr_date, yr_date))
+	data5 = cursor.fetchall()
+	query6 = 'SELECT SUM(Sold_Price) FROM ticket NATURAL JOIN flights WHERE Cust_Email = %s AND Depart_date > %s AND Depart_date < %s AND EXTRACT(MONTH FROM Depart_date) = 6'
+	cursor.execute(query6, (username, hyr_date, yr_date))
+	data6 = cursor.fetchall()
+	query7 = 'SELECT SUM(Sold_Price) FROM ticket NATURAL JOIN flights WHERE Cust_Email = %s AND Depart_date > %s AND Depart_date < %s AND EXTRACT(MONTH FROM Depart_date) = 7'
+	cursor.execute(query7, (username, hyr_date, yr_date))
+	data7 = cursor.fetchall()
+	query8 = 'SELECT SUM(Sold_Price) FROM ticket NATURAL JOIN flights WHERE Cust_Email = %s AND Depart_date > %s AND Depart_date < %s AND EXTRACT(MONTH FROM Depart_date) = 8'
+	cursor.execute(query8, (username, hyr_date, yr_date))
+	data8 = cursor.fetchall()
+	query9 = 'SELECT SUM(Sold_Price) FROM ticket NATURAL JOIN flights WHERE Cust_Email = %s AND Depart_date > %s AND Depart_date < %s AND EXTRACT(MONTH FROM Depart_date) = 9'
+	cursor.execute(query9, (username, hyr_date, yr_date))
+	data9 = cursor.fetchall()
+	query10 = 'SELECT SUM(Sold_Price) FROM ticket NATURAL JOIN flights WHERE Cust_Email = %s AND Depart_date > %s AND Depart_date < %s AND EXTRACT(MONTH FROM Depart_date) = 10'
+	cursor.execute(query10, (username, hyr_date, yr_date))
+	data10 = cursor.fetchall()
+	query11 = 'SELECT SUM(Sold_Price) FROM ticket NATURAL JOIN flights WHERE Cust_Email = %s AND Depart_date > %s AND Depart_date < %s AND EXTRACT(MONTH FROM Depart_date) = 11'
+	cursor.execute(query11, (username, hyr_date, yr_date))
+	data11 = cursor.fetchall()
+	query12 = 'SELECT SUM(Sold_Price) FROM ticket NATURAL JOIN flights WHERE Cust_Email = %s AND Depart_date > %s AND Depart_date < %s AND EXTRACT(MONTH FROM Depart_date) = 12'
+	cursor.execute(query12, (username, hyr_date, yr_date))
+	data12 = cursor.fetchall()
+	cursor.close()
+	empty = None
+	if (data1) or (data2) or (data3) or (data4) or (data5) or (data6) or (data7) or (data8) or (data9) or (data10) or (data11) or (data12):
+		return render_template('rangedResultsT.html', username=username, hyr_date=hyr_date, yr_date=yr_date, data1=data1, data2=data2, data3=data3, data4=data4, data5=data5, data6=data6, data7=data7, data8=data8, data9=data9, data10=data10, data11=data11, data12=data12)
+	else:
+		empty = 'There is no data to show at this time.'
+		return render_template('rangedResultsT.html', username=username, empty=empty)
 
 @app.route('/homestaff')
 def homestaff():

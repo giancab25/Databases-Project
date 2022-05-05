@@ -1,0 +1,17 @@
+<html>
+    <h1>
+        {{username}}'s Spending Tracker
+    </h1>
+
+    <p>Specific the date range you would like to view. Follow the hightlighted format for the date.</p>
+
+    <form action="/rangedTable" method="POST">
+        <input type="date" name = "hyr_date" required/></br>
+        <input type="date" name = "yr_date" required/></br>
+        <input type="submit" value = Submit />
+    </form>
+
+
+
+    <a href="/home">Customer Home Page</a>
+</html>
