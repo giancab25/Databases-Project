@@ -1,0 +1,102 @@
+
+{% if source == "newflight" %}
+<h1>PLEASE PROVIDE FLIGHT INFORMATION</h1>
+<form action="/newflight" method="POST">
+    <p>Choose airline:<SELECT name = "AL">
+        {% for x in airline_list %}
+            <OPTION value = "{{x.Airline_name}}">{{x.Airline_name}}
+            </OPTION>
+        {% endfor %}    
+    </SELECT> 
+    </p><br>
+    <p>Flight number:
+    <input type="text" name = "FN" placeholder="Flight number" required/></p>
+    <p>Depart_date
+    <input type="text" name = "DD" placeholder="yyyy-mm-dd" required/></p>
+    <p>Depart time
+    <input type="text" name = "DT" placeholder="hh:mm:ss" required/></p>
+    <p>Depart port
+    <input type="text" name = "DP" placeholder="Depart port" required/></p>
+    <p>Arrival port
+    <input type="text" name = "AP" placeholder="Arrival port" required/></p>
+    <p>Arrival date
+    <input type="text" name = "AD" placeholder="yyyy-mm-dd" /></p>
+    <p>Arrival time
+    <input type="text" name = "AT" placeholder="hh:mm:ss" /></p>
+    <p>Base price
+    <input type="text" name = "BP" placeholder="###.##" /></p>
+    <p>ID number
+    <input type="text" name = "IN" placeholder="ID number" /></p>
+    <input type="submit" value = "Create" />
+</form>
+
+<a href="/homestaff">Staff Home Page</a>
+{% endif %}
+
+{% if source == "change" %}
+<h1>SELECT FLIGHT TO CHANGE</h1>
+<form action="/confirmchange" method="POST">
+    <p>Flights:<SELECT name = "Flights">
+        {% for x in flightlist %}
+            <OPTION value = "{{x.Airline_name}},{{x.Flight_num}},{{x.Depart_date}},{{x.Depart_time}},{{x.Flight_status}}"> 
+                                                Airline_name: {{x.Airline_name}} ||
+                                                Flight_num: {{x.Flight_num}} ||
+                                                Depart_date: {{x.Depart_date}} ||
+                                                Depart_time: {{x.Depart_time}} ||
+                                                Depart_port: {{x.Depart_port}} ||
+                                                Arrival_port: {{x.Arrival_port}} ||
+                                                Arrival_date: {{x.Arrival_date}} ||
+                                                Arrival_time: {{x.Arrival_time}} ||
+                                                Base_price: {{x.Base_price}} ||
+                                                ID_num: {{x.ID_num}} ||
+                                                Flight_status: {{x.Flight_status}}
+            </OPTION>
+        {% endfor %}    
+    </SELECT> 
+    </p>
+    <input type="submit" value = "Change" />
+</form>
+
+<a href="/homestaff">Staff Home Page</a>
+{% endif %}
+
+{% if source == "newplane" %}
+<h1>PLEASE PROVIDE PLANE INFORMATION</h1>
+<form action="/addplane" method="POST">
+    <p>Choose airline:<SELECT name = "AL">
+        {% for x in airline_list %}
+            <OPTION value = "{{x.Airline_name}}">{{x.Airline_name}}
+            </OPTION>
+        {% endfor %}    
+    </SELECT> 
+    </p>
+    <p>Airplane ID:
+    <input type="text" name = "AI" placeholder="Airplane ID" required/></p>
+    <p>Seat count:
+    <input type="text" name = "SC" placeholder="Seat Count" required/></p>
+    <p>Manufactor:
+    <input type="text" name = "MC" placeholder="Manufactor" required/></p>
+    <input type="submit" value = "Add Plane" />
+</form>
+
+<a href="/homestaff">Staff Home Page</a>
+{% endif %}
+
+{% if source == "newport" %}
+<h1>PLEASE PROVIDE PORT INFORMATION</h1>
+<form action="/addport" method="POST">
+    <p>Port code:
+    <input type="text" name = "PC" placeholder="Port code" required/></p>
+    <p>Port name:
+    <input type="text" name = "PN" placeholder="Port name" required/></p>
+    <p>Port city:
+    <input type="text" name = "CP" placeholder="Port city" required/></p>
+    <p>Port country:
+    <input type="text" name = "CC" placeholder="Port country" required/></p>
+    <p>Airport Type:
+    <input type="text" name = "AT" placeholder="Airport type" required/></p>
+    <input type="submit" value = "Add Port" />
+</form>
+
+<a href="/homestaff">Staff Home Page</a>
+{% endif %}

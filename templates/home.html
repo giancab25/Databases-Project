@@ -1,0 +1,31 @@
+<html>
+<head>
+</head>
+<body>
+
+<h1>Welcome {{username}}</h1>
+	
+<br><h2>VIEW UP COMING FLIGHTS</h2>
+
+<form action="/viewflights" method="POST">
+	<input type="submit" value = viewflights />
+</form>
+
+<h2>VIEW PAST FLIGHTS</h2>
+
+<form action="/pastflights" method="POST">
+	<input type="submit" value = pastflights />
+</form>
+
+<h2>VIEW FLIGHTS AVAILABLE</h2>
+
+<form action="/flightsearch2" method="POST">
+	<input type="submit" value = "search available flights" />
+</form>
+
+<a href="/logout">Logout</a>
+
+</body>
+
+
+</html>
