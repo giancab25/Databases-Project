@@ -1,0 +1,42 @@
+{% if not error %}
+<h1>
+    The Most Frequent Customer within the Year
+</h1>
+
+<table border = 1>
+    {% for freq in data %}
+    <tr>
+        <td>{{freq['Cust_Email']}}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<br>
+
+{% endif %}
+
+
+{% if error %}
+<p class="error"><strong>Error:</strong> {{error}}</p>
+{% endif %}
+<br>
+
+
+
+<form action="/CustFlightList" method="POST">
+    <h3>List of Flights for Customer at Airline</h3>
+    <p>Choose which customer's flight list to view:<SELECT name='tickets'>
+    {% for i in ticket_list %}
+        <OPTION value="{{i}}"">  Ticket No.: {{i.Ticket_ID}} ||
+                                Customer: {{i.Cust_Email}} ||
+                                Flight No.: {{i.Flight_num}} ||
+                                Airline: {{i.Airline_Name}}
+        </OPTION>
+    {% endfor %}
+    </SELECT>
+    </p>
+    <input type = "submit" value = "Finished Viewing" />
+</form>
+
+
+<a href="/homestaff">[Employee Home Page]</a>

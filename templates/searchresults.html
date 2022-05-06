@@ -1,0 +1,79 @@
+{% if source == "pastflights" %}
+    <p>ALL PAST FLIGHTS FOR {{username}}</p>
+{% endif %}
+
+{% if source == "viewflights" %}
+    <p>ALL UPCOMING FLIGHTS FOR {{username}}</p>
+{% endif %}
+
+{% if source == "flightsearch" or source == "custsearch"  %}
+    <p>POTENTIAL FLIGHTS LISTED</p>
+{% endif %}
+
+{% if source == "pastflights" or source == "viewflights" or source == "flightsearch" or source == "custsearch" %}
+<table border = 1>
+    {% for flight in flightData %}
+    <tr>
+        <td>{{flight["Airline_name"]}}</td>
+        <td>{{flight["Flight_num"]}}</td>
+        <td>{{flight["Depart_date"]}}</td>
+        <td>{{flight["Depart_time"]}}</td>
+        <td>{{flight["Depart_port"]}}</td>
+        <td>{{flight["Arrival_port"]}}</td>
+        <td>{{flight["Arrival_date"]}}</td>
+        <td>{{flight["Arrival_time"]}}</td>
+        <td>{{flight["Base_price"]}}</td>
+        <td>{{flight["ID_num"]}}</td>
+        <td>{{flight["Flight_status"]}}</td>
+        
+    </tr>
+    {% endfor %}
+</table>
+{% endif %}
+
+{% if source == "viewflights"  %}
+    <a href="/home">Customer Home Page</a>
+{% endif %}
+
+{% if source == "pastflights"%}
+    <p>Would you like to leave a review? Enter the Flight number of your choice below and tell us what you think!</p>
+
+    <form action="/critique_sub" method="POST">
+        <input type="number" name = f_num placeholder="Enter your flight number">
+        <input type="number" id="quantity" name = "rating" min = "1" max = "5" placeholder="Rate Us from 1 to 5" required/> </br>
+        <input type="text" name = "comment" placeholder="Comment right here" required/></br>
+        <input type="submit" value = Submit />
+    </form>
+
+    {% if message %}
+    <p class="error"><strong>Error:</strong>{{message}}</p>
+    {% endif %}
+
+    <br>
+
+    <a href="/home">[Customer Home Page]</a>
+    <a href="/pastflights">[Fresh]</a>
+    <a href="/home">Customer Home Page</a>
+{% endif %}
+
+{% if source == "flightsearch"  %}
+    <a href="/flightsearch">Public Page</a>
+{% endif %}
+
+{% if source == "custsearch" %}
+    <a href="/flightsearch2">Customer Home Page</a>
+{% endif %}
+
+
+{% if source == "stat" %}
+<p>CURRENT FLIGHT STATUS:</p>
+<table border = 1>
+    {% for flight in stat %}
+    <tr>
+        <td>{{flight["Flight_status"]}}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<a href="/viewflightstatus">Go back</a>
+{% endif %}

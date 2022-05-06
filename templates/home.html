@@ -1,0 +1,52 @@
+<html>
+<head>
+</head>
+<body>
+
+<h1>Welcome {{username}}</h1>
+	
+{% if message %}
+<h3>{{message}}</h3>
+{% endif %}
+
+
+<br><h2>VIEW UP COMING FLIGHTS</h2>
+
+<form action="/viewflights" method="POST">
+	<input type="submit" value = viewflights />
+</form>
+
+<h2>VIEW PAST FLIGHTS</h2>
+
+<form action="/pastflights" method="POST">
+	<input type="submit" value = pastflights />
+</form>
+
+<h2>VIEW FLIGHTS AVAILABLE</h2>
+
+<form action="/flightsearch2" method="POST">
+	<input type="submit" value = "search available flights" />
+</form>
+
+
+
+<h2>VIEW RECENT PURCHASES</h2>
+
+<form action="/yearPurchases" method="POST">
+	<input type="submit" value = 'Purchase Total for the Past Year' />
+</form>
+
+<form action="/fixedTable" method="POST">
+	<input type="submit" value = 'Last 6 Months Table' />
+</form>
+
+<form action="/pickRangeP" method="POST">
+	<input type="submit" value = 'Purchase Total with Time Range' />
+</form>
+
+<form action="/pickRangeT" method="POST">
+	<input type="submit" value = 'Time Range Table' />
+</form>
+<a href="/logout">Logout</a>
+</body>
+</html>

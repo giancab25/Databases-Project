@@ -1,0 +1,55 @@
+<html>
+<head>
+</head>
+
+<body>
+
+{% if source == "addplane" %}
+<table border = 1>
+    <th>Airline name</th>
+    <th>ID</th>
+    <th>Seat count</th>
+    <th>Manufactor company</th>
+    <th>Age</th>
+    {% for plane in airplaneData %}
+    <tr>
+        <td>{{plane["Airline_name"]}}</td>
+        <td>{{plane["ID"]}}</td>
+        <td>{{plane["Seat_amount"]}}</td>
+        <td>{{plane["Manufactor_Company"]}}</td>
+        <td>{{plane["Age"]}}</td>
+        
+    </tr>
+    {% endfor %}
+</table>
+<a href="/newplane">Go back</a>
+{% endif %}
+
+{% if source == "revenue" %}
+<h4>Monthly Revenue</h4>
+<table border = 1>
+    <th>Tickets sold</th>
+    <th>Total Revenue</th>
+    {% for data in month %}
+    <tr>
+        <td>{{data["totalT"]}}</td>
+        <td>{{data["totalR"]}}</td>
+    </tr>
+    {% endfor %}
+</table>
+<h4>Yearly Revenue</h4>
+<table border = 1>
+    <th>Tickets sold</th>
+    <th>Total Revenue</th>
+    {% for data in year %}
+    <tr>
+        <td>{{data["totalT"]}}</td>
+        <td>{{data["totalR"]}}</td>
+    </tr>
+    {% endfor %}
+</table>
+<a href="/homestaff">Go back</a>
+{% endif %}
+
+</body>
+</html>

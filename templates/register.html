@@ -1,0 +1,43 @@
+<html>
+<head>
+</head>
+<body>
+<form action="/registerAuth" method="POST">
+	</p> Customer Registration </p>
+	</p> Information </p>
+	<input type="text" name = "name" placeholder="Name" required/> </br>
+	<input type="email" name="email" placeholder="Email" required/> </br>
+	<input type="password" name = "password" placeholder="Password" required/></br>
+	<input type="text" name="phone_num" placeholder="Phone #" required/></br>
+	<input type="text" name="passport_num" placeholder="Passport #" required/></br>
+	<body>Exp. Date <body><input type="date" name="passport_exp" placeholder="Expiration (mm/dd/yyyy)" required/></br>
+	<input type="text" name="passport_country" placeholder="Passport Country" required/></br>
+	<body>DOB <body><input type="date" name="date_of_birth" placeholder="State" required/></br>
+	</p> Address </p>
+	<input type="number" name ="building_num" placeholder="Building #" required/></br>
+	<input type="text" name="cust_street" placeholder="Street" required/></br>
+	<input type="text" name="cust_city" placeholder="City" required/></br>
+	<input type="text" name="cust_state" placeholder="State" required/></br>
+	<input type="submit" value = Register />
+	{% if error %}
+		<p class="error"><strong>Error:</strong> {{error}}</p>
+	{% endif %}
+</form>
+</br>
+</br>
+<form action="/registerAuthStaff" method="POST">
+	</p> Staff Registration </p>
+	<input type="text" name="staff_username" placeholder="Username" required/></br>
+	<input type="text" name="airline_name" placeholder="Airline Name" required/></br>
+	<input type="password" name="staff_password" placeholder="Password" required/></br>
+	<input type="text" name="first_name" placeholder="First Name" required/></br>
+	<input type="text" name="last_name" placeholder="Last Name" required/></br>
+	<body>DOB <body></body><input type="date" name="staff_dob" placeholder="DOB" required/></br>
+	<input type="submit" value="Register" />
+	{% if error %}
+		<p class="error"><strong>Error:</strong> {{error}}</p>
+	{% endif %}
+</form>
+<a href="/">Go back</a>
+</body>
+</html>

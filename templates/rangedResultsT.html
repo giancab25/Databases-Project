@@ -1,0 +1,168 @@
+<html>
+    <h1>
+        {{username}}'s Spending Tracker
+    </h1>
+
+    {% if not empty %}
+    <p> This has been your spending between {{hyr_date}} and {{yr_date}}</p>
+
+    <table border = 1>
+        <tr>
+            <th>January</th>
+            <th>February</th>
+            <th>March</th>
+            <th>April</th>
+            <th>May</th>
+            <th>June</th>
+            <th>July</th>
+            <th>August</th>
+            <th>September</th>
+            <th>October</th>
+            <th>November</th>
+            <th>Decemeber</th>
+        </tr>
+        <tr>
+            {% for money in data1 %}
+            <td>
+                {% if money["SUM(Sold_Price)"] %}
+                    ${{money["SUM(Sold_Price)"]}}
+                {% else %}
+                    $0
+                {% endif %}
+            </td>
+            {% endfor %}
+
+
+            
+            {% for money in data2 %}
+            <td>
+                {% if money["SUM(Sold_Price)"] %}
+                    ${{money["SUM(Sold_Price)"]}}
+                {% else %}
+                    $0
+                {% endif %}
+            </td>
+            {% endfor %}
+
+
+            {% for money in data3 %}
+            <td>
+                {% if money["SUM(Sold_Price)"] %}
+                    ${{money["SUM(Sold_Price)"]}}
+                {% else %}
+                    $0
+                {% endif %}
+            </td>
+            {% endfor %}
+
+
+            
+            {% for money in data4 %}
+            <td>
+                {% if money["SUM(Sold_Price)"] %}
+                    ${{money["SUM(Sold_Price)"]}}
+                {% else %}
+                    $0
+                {% endif %}
+            </td>
+            {% endfor %}
+            
+            {% for money in data5 %}
+            <td>
+                {% if money["SUM(Sold_Price)"] %}
+                    ${{money["SUM(Sold_Price)"]}}
+                {% else %}
+                    $0
+                {% endif %}
+            </td>
+            {% endfor %}
+
+
+            
+            {% for money in data6 %}
+            <td>
+                {% if money["SUM(Sold_Price)"] %}
+                    ${{money["SUM(Sold_Price)"]}}
+                {% else %}
+                    $0
+                {% endif %}
+            </td>
+            {% endfor %}
+
+            {% for money in data7 %}
+            <td>
+                {% if money["SUM(Sold_Price)"] %}
+                    ${{money["SUM(Sold_Price)"]}}
+                {% else %}
+                    $0
+                {% endif %}
+            </td>
+            {% endfor %}
+
+
+            
+            {% for money in data8 %}
+            <td>
+                {% if money["SUM(Sold_Price)"] %}
+                    ${{money["SUM(Sold_Price)"]}}
+                {% else %}
+                    $0
+                {% endif %}
+            </td>
+            {% endfor %}
+
+            {% for money in data9 %}
+            <td>
+                {% if money["SUM(Sold_Price)"] %}
+                    ${{money["SUM(Sold_Price)"]}}
+                {% else %}
+                    $0
+                {% endif %}
+            </td>
+            {% endfor %}
+
+
+            
+            {% for money in data10 %}
+            <td>
+                {% if money["SUM(Sold_Price)"] %}
+                    ${{money["SUM(Sold_Price)"]}}
+                {% else %}
+                    $0
+                {% endif %}
+            </td>
+            {% endfor %}
+
+            {% for money in data11 %}
+            <td>
+                {% if money["SUM(Sold_Price)"] %}
+                    ${{money["SUM(Sold_Price)"]}}
+                {% else %}
+                    $0
+                {% endif %}
+            </td>
+            {% endfor %}
+
+
+            
+            {% for money in data12 %}
+            <td>
+                {% if money["SUM(Sold_Price)"] %}
+                    ${{money["SUM(Sold_Price)"]}}
+                {% else %}
+                    $0
+                {% endif %}
+            </td>
+            {% endfor %}
+        </tr>
+    </table>
+    {% endif %}
+
+    {% if empty %}
+    <p class="error"><strong>Error:</strong>{{empty}}</p>
+    {% endif %}
+
+    
+
+    <a href="/home">Customer Home Page</a>
+</html>
