@@ -43,7 +43,8 @@ CREATE TABLE Flights(
 	ID_num			int,
 	Flight_status	varchar(7),
 	PRIMARY KEY (Airline_name, Flight_num, Depart_date, Depart_time),
-	FOREIGN KEY (Airline_name) references Airline (Airline_name)
+	FOREIGN KEY (Airline_name) references Airline (Airline_name),
+	INDEX (Flight_num)
 );
 
 CREATE TABLE Airline_Staff(
