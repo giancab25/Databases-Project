@@ -1,0 +1,51 @@
+<html>
+<!--CHANGE Below is the form for purchasing a flight ticket (still needs search implementation)-->
+<form action="/purchase" method="POST">
+	<h1>Purchase Flight Ticket</h1>
+	<p>Choose Outgoing Flight:<SELECT name="outflights">
+		{% for i in outflights %}
+			<OPTION value={{i.Flight_num}},{{i.ID_num}},{{i.Base_price}},{{i.Depart_date}},{{i.Depart_time}}>Airline: {{i.Airline_name}} ||
+									   Flight Number: {{i.Flight_num}} ||     
+									   Depart Date: {{i.Depart_date}} ||
+									   Depart_Time: {{i.Depart_time}} || 
+									   Depart Airport: {{i.Depart_port}} ||
+									   Arrival Airport: {{i.Arrival_port}}
+			</OPTION>
+		{% endfor %}
+	</SELECT>
+	<!--{% if inflights %}-->
+	<p>Choose Incoming Flight:<SELECT name="inflights">
+		{% for i in inflights %}
+			<OPTION value={{i.Flight_num}},{{i.ID_num}},{{i.Base_price}},{{i.Depart_date}},{{i.Depart_time}}>Airline: {{i.Airline_name}} ||
+									   Flight Number: {{i.Flight_num}} ||     
+									   Depart Date: {{i.Depart_date}} ||
+									   Depart_Time: {{i.Depart_time}} || 
+									   Depart Airport: {{i.Depart_port}} ||
+									   Arrival Airport: {{i.Arrival_port}}
+			</OPTION>
+		{% endfor %}
+	</SELECT>
+	<!--{% endif %}-->
+	</p>
+	<p>Choose Class: <SELECT name="ticket_class">
+		<OPTION value="First">First Class</OPTION>
+		<OPTION value="Business">Business Class</OPTION>
+		<OPTION value="Economy">Economy Class</OPTION>
+	</SELECT>
+	</p>
+	<p>Card Type: <SELECT name="card_type">
+		<OPTION value="Credit">Credit Card</OPTION>
+		<OPTION value="Debit">Debit Card</OPTION>
+	</SELECT>
+	</p>
+	<b>Name on Card: </b><input type="text" name="card_name" placeholder="Card Name" required/><br>
+	</p>
+	<b>Card Number: </b><input type="text" name="card_number" placeholder="Card #" required/><br>
+	</p>
+	<b>Expiration Date: </b><input type="date" name="exp_date" placeholder="Exp_date" required/><br>
+	<input type="submit" value = "Purchase" />
+	{% if error %}
+		<p class="error"><strong>Error:</strong> {{error}}</p>
+	{% endif %}
+</form>
+</html>

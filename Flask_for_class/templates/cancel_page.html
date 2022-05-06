@@ -1,0 +1,20 @@
+<!--CHANGE Below is the form for cancelling a flight ticket (still need 24 hours in adv)-->
+<form action="/cancel" method="POST">
+	<h1>Cancel Flight</h1>
+	<p>Choose Flight to Cancel:<SELECT name="tickets">
+		{% for j in ticket_list %}
+			<OPTION value={{j.Ticket_ID}}>Ticket ID: {{j.Ticket_ID}} ||
+										Airline: {{j.Airline_Name}} ||
+										Class: {{j.Class}} || 
+									   Flight Number: {{j.Flight_num}} ||  
+									   Depart Airport: {{j.Depart_port}} ||
+									   Arrival Airport: {{j.Arrival_port}} ||   
+									   Depart Date: {{j.Depart_date}} || 
+									   Depart_Time: {{j.Depart_time}}
+			</OPTION>
+		{% endfor %}
+	</SELECT>
+	</p>
+	<input type = "submit" value = "Cancel Flight Ticket"/>
+</form>
+<a href="/home">Go back</a>

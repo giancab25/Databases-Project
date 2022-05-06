@@ -1,0 +1,36 @@
+  <!--CHANGE Below is the form for the staff to view/search for flights in their airline-->
+  <h1>View Flights</h1>
+  <form action="staff_view" method="POST">
+      <label for="Scity_port">From: </label>
+      <SELECT name="Scity_port">
+          <optgroup label="City">
+              {% for i in airport %}
+              <OPTION value={{i.City}}>{{i.City}}</OPTION>
+              {% endfor %}
+          </optgroup>
+          <optgroup label="Airport">
+              {% for i in airport %}
+              <OPTION value={{i.Port_name}}>{{i.Port_name}}</OPTION>
+              {% endfor %}
+          </optgroup>
+      </SELECT>
+  
+      <label for="Dcity_port">To: </label>
+      <SELECT name="Dcity_port">
+          <optgroup label="City">
+              {% for i in airport %}
+              <OPTION value={{i.City}}>{{i.City}}</OPTION>
+              {% endfor %}
+          </optgroup>
+          <optgroup label="Airport">
+              {% for i in airport %}
+              <OPTION value={{i.Port_name}}>{{i.Port_name}}</OPTION>
+              {% endfor %}
+          </optgroup>
+      </SELECT><br>
+      <label for = "ddate">Depart Date: </label>
+      <input type = "date" name = "ddate" placeholder = "ddate" required/>
+      <label for = "rdate">Return Date (Leave Empty if One Way)</label>
+      <input type = "date" name = "rdate" placeholder = "rdate"/><br>
+      <input type = "submit" value = "Find Flights"/><br>
+  </form>

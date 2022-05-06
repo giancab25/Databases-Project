@@ -1,0 +1,44 @@
+<html>
+<!--CHANGE Below is the form for the user to select departing and returning flight (Dropdown)-->
+<h1>Book Flight</h1>
+
+<form action="/search_purchase" method="POST">
+    <label for="Scity_port">From: </label>
+    <SELECT name="Scity_port">
+        <optgroup label="City">
+            {% for i in airport %}
+            <OPTION value={{i.City}}>{{i.City}}</OPTION>
+            {% endfor %}
+        </optgroup>
+        <optgroup label="Airport">
+            {% for i in airport %}
+            <OPTION value={{i.Port_name}}>{{i.Port_name}}</OPTION>
+            {% endfor %}
+        </optgroup>
+    </SELECT>
+    
+    <label for="Dcity_port">To: </label>
+    <SELECT name="Dcity_port">
+        <optgroup label="City">
+            {% for i in airport %}
+            <OPTION value={{i.City}}>{{i.City}}</OPTION>
+            {% endfor %}
+        </optgroup>
+        <optgroup label="Airport">
+            {% for i in airport %}
+            <OPTION value={{i.Port_name}}>{{i.Port_name}}</OPTION>
+            {% endfor %}
+        </optgroup>
+    </SELECT><br>
+    <label for = "ddate">Depart Date: </label>
+    <input type = "date" name = "ddate" placeholder = "ddate" required/>
+    <label for = "rdate">Return Date (Leave Empty if One Way)</label>
+    <input type = "date" name = "rdate" placeholder = "rdate"/><br>
+    <input type = "submit" value = "Find Flights"/><br>
+    {% if error %}
+        <p class="error"><strong>Error:</strong> {{error}}</p>
+    {% endif %}
+</form>
+<a href="/reloadPS">Reload</a>
+<a href="/home">Go back</a>
+</html>

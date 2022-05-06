@@ -1,0 +1,33 @@
+<html>
+<head>
+</head>
+<body>
+	<h1>Welcome {{username}}!</h1>
+	<!--CHANGE-->
+	<a href="/purchase_search">Purchase Flight Ticket</a><br>
+	<a href="/cancel_page">Cancel Flight</a>
+
+<style type="text/css">
+	table, th, td{
+		border: 1px solid black;
+	}
+</style>
+
+<table>
+	<th>Time</th>
+	<th>Post</th>
+
+{% for line in posts %}
+	<tr>
+		<td>{{line['ts']}}</td>
+		<td>{{line['blog_post']}}</td>
+	</tr>
+{% endfor %}
+</table>
+
+<a href="/logout">Logout</a>
+
+</body>
+
+
+</html>
