@@ -1,0 +1,71 @@
+<html>
+    <head>
+        <style type="text/css">
+            body{
+                margin: 0;
+            }
+
+            nav{
+                width: 100%;
+                float: left;
+            }
+
+            .top_menu{
+                margin: 0;
+                padding: 8px;
+                height: 21px;
+                background-color:#0288d1;
+            }
+
+            .top_menu li{
+                display: inline;
+            }
+
+            .button{
+                font-family: Arial;
+                font-size:1em;
+                font-style: none;
+                color: #ffffff;
+                padding: 8px;
+                text-decoration: none;
+            }
+
+            .button:link{
+                background-color: #0288d1;
+                color: #ffffff
+            }
+
+            .button:hover{
+                background-color: #03a9f4;
+            }
+        </style>
+    </head>
+    <body>
+        <nav>
+            <ul class="top_menu">
+                <li><a class="button" href="/homestaff">Home</a></li>
+                <li><a class="button" href="/topDest">Top 3 Dest.</a></li>
+                <li><a class="button" href="/critique_view">Flight Ratings</a></li>
+                <li><a class="button" href="/freqCust">Frequent Customers</a></li>
+            </ul>
+        </nav>
+
+        
+        <h1>Welcome Employee, {{username}}!</h1>
+
+
+        <h3>
+            <p style="text-align:center;">
+                <br>This is your homepage, our beloved staff. It'll almost feel like a second home during your time with us!
+            </p>
+            
+		</form>
+
+        
+
+        <a href="/logout">Logout</a>
+
+    </body>
+
+
+</html>
