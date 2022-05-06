@@ -1,0 +1,45 @@
+<h1>
+    Display of Flight Ratings
+</h1>
+
+{% if not error %}
+<p>Below will be a collection of inforation about the flight itself, its ratings, and anyone who rated it.</p>
+<table border = 1>
+    <tr>
+        <th>Airline</th>
+        <th>Flight No.</th>
+        <th>Departure Date</th>
+        <th>Departure Time</th>
+        <th>Departure Port</th>
+        <th>Arrival Date</th>
+        <th>Arrival Time</th>
+        <th>Arrival Port</th>
+        <th>Flight Status</th>
+        <th>Average Ratings</th>
+        <th>Rating</th>
+        <th>Comments</th>
+        <th>User Email Address</th>
+    </tr>
+    {% for review in data %}
+    <tr>
+        <td>{{review["Airline_name"]}}</td>
+        <td>{{review["Flight_num"]}}</td>
+        <td>{{review["Depart_date"]}}</td>
+        <td>{{review["Depart_time"]}}</td>
+        <td>{{review["Depart_port"]}}</td>
+        <td>{{review["Arrival_date"]}}</td>
+        <td>{{review["Arrival_time"]}}</td>
+        <td>{{review["Arrival_port"]}}</td>
+        <td>{{review["Flight_status"]}}</td>
+        <td>{{review["Avg_ratings"]}}</td>
+        <td>{{review["Rating"]}}</td>
+        <td>{{review["Comments"]}}</td>
+        <td>{{review["Email_Address"]}}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+
+<br><br>
+{% endif %}
+<a href="/homestaff">[Employee Home Page]</a>

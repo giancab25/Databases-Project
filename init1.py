@@ -1,6 +1,7 @@
 #Import Flask Library
 from asyncio.windows_events import NULL
 from datetime import datetime, date, timedelta
+from time import time
 from flask import Flask, render_template, request, session, url_for, redirect
 import pymysql.cursors
 
@@ -158,8 +159,8 @@ def RTresults():
 		cursor2.close()
 		return render_template('searcherror.html')
 
-#flight search execution for Round Trip
-
+# BEGINNING OF CHANGE BLOCK
+###################################################################################################################################################################################################
 @app.route('/critique_sub', methods=['GET', 'POST'])
 def critique_sub():
 	#grabs information from the forms
@@ -172,11 +173,11 @@ def critique_sub():
 	#cursor used to send queries
 	cursor = conn.cursor()
 
-	query = 'SELECT * FROM flights, ticket WHERE ticket.Flight_num = %s and Cust_Email = %s'
+	query = 'SELECT * FROM flights NATURAL JOIN ticket WHERE ticket.Flight_num = %s AND Cust_Email = %s'
 	cursor.execute(query, (f_num, username))
 	data = cursor.fetchone()
-	query = 'SELECT * FROM critiques WHERE Cust_addy = %s'
-	cursor.execute(query, (username))
+	query = 'SELECT * FROM critiques NATURAL JOIN ticket WHERE Flight_Num = %s AND Email_Address = %s'
+	cursor.execute(query, (f_num, username))
 	spam = cursor.fetchone()
 	message = None
 	if (spam) and (data):
@@ -193,7 +194,7 @@ def critique_sub():
 		return render_template('pastflights.html', message=message)
 	else:
 		
-		ins = 'INSERT INTO critiques VALUES (%s, %s, %s, %s)'
+		ins = 'INSERT INTO critiques(Email_Address, Flight_num, Rating, Comments) VALUES (%s, %s, %s, %s)'
 		cursor.execute(ins, (username, f_num, rating, comment))
 		conn.commit()
 		cursor.close()
@@ -204,6 +205,8 @@ def critique_sub():
 @app.route('/reloadCrit', methods=['GET', 'POST'])
 def refreshCrit():
 	return redirect(url_for('pastflights'))
+###################################################################################################################################################################################################
+# END OF CHANGE BLOCK
 
 
 #Authenticates the login
@@ -379,6 +382,8 @@ def available():
 		cursor.close()
 		return render_template('available.html')
 
+# BEGINING OF CHANGE BLOCK
+###################################################################################################################################################################################################
 @app.route('/yearPurchases', methods=['GET', 'POST'])
 def yearPurchases():
 	username = session['username']
@@ -524,7 +529,92 @@ def homestaff():
 	username=session['username']
 	return render_template('homestaff.html', username=username)
 
-		
+@app.route('/topDest', methods=['GET', 'POST'])
+def topDest():
+	past_date1 = date.today() - timedelta(days = 91)
+	past_date2 = date.today() - timedelta(days = 365)
+	cursor = conn.cursor()
+	view = 'CREATE VIEW popular_port AS SELECT Flight_Num, Arrival_port FROM flights NATURAL JOIN ticket WHERE Depart_date > %s ORDER BY Flight_Num DESC;'
+	cursor.execute(view, (past_date1))
+	query = 'SELECT COUNT(Flight_Num), Arrival_port FROM popular_port GROUP BY Flight_Num ORDER BY COUNT(Flight_Num) DESC LIMIT 3;'
+	cursor.execute(query)
+	data1 = cursor.fetchall()
+	query = 'DROP VIEW popular_port'
+	cursor.execute(query)
+
+	view = 'CREATE VIEW popular_port AS SELECT Flight_Num, Arrival_port FROM flights NATURAL JOIN ticket WHERE Depart_date > %s ORDER BY Flight_Num DESC;'
+	cursor.execute(view, (past_date2))
+	query = 'SELECT COUNT(Flight_Num), Arrival_port FROM popular_port GROUP BY Flight_Num ORDER BY COUNT(Flight_Num) DESC LIMIT 3;'
+	cursor.execute(query)
+	data2 = cursor.fetchall()
+	query = 'DROP VIEW popular_port'
+	cursor.execute(query)
+	cursor.close()
+	no_three = None
+	no_data = None
+	if (data1) and (data2):
+		return render_template('topDest.html', data1=data1, data2=data2)
+	elif not (data1) and (data2):
+		no_three = 'There was not enough data to display the top 3 destinations in the past 3 months!'
+		return render_template('topDest.html', no_three=no_three, data2=data2)
+	else:
+		no_data = 'There was no data to show the top 3 destinations in both the past 3 months and year!'
+		return render_template('topDest.html', no_data=no_data)
+
+@app.route('/critique_view', methods=['GET', 'POST'])
+def critique_view():
+	cursor = conn.cursor()
+	query = 'UPDATE flights SET Avg_ratings = (SELECT ROUND(AVG(Rating),1) FROM critiques WHERE critiques.Flight_num = flights.Flight_num) WHERE EXISTS (SELECT ROUND(AVG(Rating),1) FROM critiques WHERE critiques.Flight_num = flights.Flight_num);'
+	cursor.execute(query)
+	query = 'SELECT Airline_name, Flight_num, Depart_date, Depart_time, Depart_port, Arrival_date, Arrival_time, Arrival_port, Flight_status, Avg_ratings, Rating, Comments, Email_Address FROM critiques NATURAL JOIN flights;'
+	cursor.execute(query)
+	data = cursor.fetchall()
+	cursor.close()
+	error = None
+	if (data):
+		return render_template('critique_view.html', data=data)
+	else:
+		error = 'Unable to display the current ratings, please return later!'
+		return render_template('critique_view.html', error=error)
+
+@app.route('/freqCust', methods=['GET', 'POST'])
+def freqCust():
+	yr_date = date.today() - timedelta(days = 365)
+	cursor = conn.cursor()
+	view = 'CREATE VIEW freq_visitor AS SELECT Flight_Num, Cust_Email FROM flights NATURAL JOIN ticket WHERE Depart_date > %s ORDER BY Flight_Num DESC;'
+	cursor.execute(view, (yr_date))
+	query = 'SELECT Flight_Num, Cust_Email FROM freq_visitor GROUP BY Cust_Email ORDER BY COUNT(Cust_Email) DESC LIMIT 1;'
+	cursor.execute(query)
+	data = cursor.fetchall()
+	query = 'DROP VIEW freq_visitor;'
+	cursor.execute(query)
+
+	username = session['username']
+	query = 'SELECT * FROM ticket NATURAL JOIN airline_staff WHERE Cust_Email = ("gjc357@nyu.edu") AND Airline_Name = Airline_name;'
+	cursor.execute(query)
+	ticket_list = cursor.fetchall()
+	cursor.close()
+	error = None
+	if (data):
+		return render_template('freqCust.html', data=data, ticket_list=ticket_list)
+	else:
+		return render_template('freqCust.html', error=error, ticket_list=ticket_list)
+
+@app.route('/CustFlightList', methods=['GET', 'POST'])
+def CustFlightList():
+	cursor = conn.cursor()
+	data = request.form.get('tickets').split(',')
+	query = 'SELECT Cust_name, Depart_date, Depart_time, Arrival_date, Arrival_time, Arrival_port FROM customer NATURAL JOIN flights WHERE Email_Address = %s AND Airline_name = %s'
+	cursor.execute(query, (data[1], data[3]))
+	conn.commit()
+	cursor.close()
+	return redirect(url_for('homestaff'))
+
+###################################################################################################################################################################################################
+# END OF CHANGE BLOCK
+
+
+
 @app.route('/post', methods=['GET', 'POST'])
 def post():
 	username = session['username']

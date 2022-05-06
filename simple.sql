@@ -94,10 +94,12 @@ CREATE TABLE Ticket(
 
 /*		Junction table for many-to-many relationship		*/
 CREATE TABLE Critiques(
-	Cust_addy			varchar(40),
+	Crit_num			int NOT NULL AUTO_INCREMENT,
+	Email_Address			varchar(40),
 	Flight_num			int,
 	Rating				int,
 	Comments			varchar(250),
-	FOREIGN KEY (Cust_addy) references Customer (Email_Address),
-	FOREIGN KEY (Flight_Num) references Flights (Flight_num)
+	PRIMARY KEY (Crit_num),
+	FOREIGN KEY (Email_Address) references Customer (Email_Address),
+	FOREIGN KEY (Flight_num) references Flights (Flight_num)
 );

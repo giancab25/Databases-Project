@@ -1,0 +1,29 @@
+{% if not message %}
+<h1>
+    Top 3 Most Popular Destinations
+</h1>
+
+<p>Within the past 3 Months:</p>
+<table border = 1>
+    {% for flight in data1 %}
+    <tr>
+        <td>{{flight["Arrival_port"]}}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<br>
+{% endif %}
+
+<p>Within the past Year:</p>
+<table border = 1>
+    {% for flight in data2 %}
+    <tr>
+        <td>{{flight["Arrival_port"]}}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<br>
+
+<a href="/homestaff">[Employee Home Page]</a>
